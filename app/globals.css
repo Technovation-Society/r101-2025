@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Garet';
+  src: url('./fonts/Garet.otf') format('opentype');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sifonn';
+  src: url('./fonts/Sifonn.otf') format('opentype');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'The Seasons';
+  src: url('./fonts/The Seasons Regular.otf') format('opentype');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'The Seasons';
+  src: url('./fonts/The Seasons Bold.otf') format('opentype');
+  font-weight: bold;
+  font-display: swap;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --blue-light: #0800ae;
+  --blue-dark: #04035f;
+  --yellow: #ffc226;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-blue-light: var(--blue-light);
+  --color-blue-dark: var(--blue-dark);
+  --color-yellow: var(--yellow);
+  --font-garet: 'Garet', system-ui, sans-serif;
+  --font-seasons: 'The Seasons', serif;
+  --font-sifonn: 'Sifonn', system-ui, sans-serif;
+  --font-sans: 'Garet', system-ui, sans-serif;
+  --font-serif: 'The Seasons', serif;
 }
 
 body {
-  background: var(--background);
+  background: #ffffff;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Garet', system-ui, sans-serif;
 }
