@@ -5,71 +5,65 @@ export default function Footer() {
     <footer className="bg-gradient-to-b from-blue-light to-blue-dark py-8 px-4">
       <div className="max-w-6xl mx-auto text-center">
         {/* TECHSOC Logo */}
-        <div className="mb-6">
+        <div className="px-4 sm:px-8 md:px-12">
           <Image
             src="/footer/TECHSOC_text.png"
             alt="Technovation Society"
-            width={0}
-            height={0}
-            sizes="100vw"
-            className="mx-auto h-auto w-auto max-w-[250px] sm:max-w-[350px] md:max-w-[400px]"
+            width={300}
+            height={100}
+            className="mx-auto h-auto w-auto max-w-full"
           />
         </div>
 
         {/* Connect with us */}
-        <div className="mb-6">
+        <div className="mt-6 mb-6">
           <h3 className="text-white text-xs sm:text-sm md:text-base font-semibold mb-4">Connect with us</h3>
 
           {/* Social Media Icons */}
-          <div className="flex justify-center gap-3 sm:gap-4 md:gap-6 mb-6">
-            <a href="#" className="hover:opacity-80 transition-opacity">
+          <div className="flex justify-center gap-2 mb-6">
+            <a href="#" className="glassglow group hover:rotate-3">
               <Image
                 src="/footer/facebook_icon.png"
                 alt="Facebook"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="h-auto w-auto max-w-[20px] sm:max-w-[24px] md:max-w-[28px]"
+                width={28}
+                height={28}
+                className="transition-all duration-300 group-hover:brightness-110"
               />
             </a>
-            <a href="#" className="hover:opacity-80 transition-opacity">
+            <a href="#" className="glassglow group hover:-rotate-2">
               <Image
                 src="/footer/instagram_icon.png"
                 alt="Instagram"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="h-auto w-auto max-w-[20px] sm:max-w-[24px] md:max-w-[28px]"
+                width={28}
+                height={28}
+                className="transition-all duration-300 group-hover:brightness-110"
               />
             </a>
-            <a href="#" className="hover:opacity-80 transition-opacity">
+            <a href="#" className="glassglow group hover:rotate-1">
               <Image
                 src="/footer/linkedin_icon.png"
                 alt="LinkedIn"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="h-auto w-auto max-w-[20px] sm:max-w-[24px] md:max-w-[28px]"
+                width={28}
+                height={28}
+                className="transition-all duration-300 group-hover:brightness-110"
               />
             </a>
-            <a href="#" className="hover:opacity-80 transition-opacity">
+            <a href="#" className="glassglow group hover:-rotate-3">
               <Image
                 src="/footer/tiktok_icon.png"
                 alt="TikTok"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="h-auto w-auto max-w-[20px] sm:max-w-[24px] md:max-w-[28px]"
+                width={28}
+                height={28}
+                className="transition-all duration-300 group-hover:brightness-110"
               />
             </a>
-            <a href="#" className="hover:opacity-80 transition-opacity">
+            <a href="#" className="glassglow group hover:rotate-2">
               <Image
                 src="/footer/email_icon.png"
                 alt="Email"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="h-auto w-auto max-w-[20px] sm:max-w-[24px] md:max-w-[28px]"
+                width={28}
+                height={28}
+                className="transition-all duration-300 group-hover:brightness-110"
               />
             </a>
           </div>

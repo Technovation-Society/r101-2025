@@ -54,3 +54,11 @@ body {
   color: var(--foreground);
   font-family: 'Garet', system-ui, sans-serif;
 }
+
+.glassglow {
+  @apply relative p-2 rounded-xl transition-all duration-300;
+}
+
+.glassglow:hover {
+  @apply backdrop-blur-sm bg-white/10 shadow-xl shadow-white/30;
+}
