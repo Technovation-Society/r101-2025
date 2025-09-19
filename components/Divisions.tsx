@@ -19,7 +19,7 @@ const divisions: Division[] = [
   {
     id: 'technical',
     name: 'TECHNICAL\nDEVELOPMENT',
-    color: 'bg-blue-500',
+    color: "rgba(0, 123, 255, 0.3)", // blue
     description: 'Builds functional prototypes, apps, and tech solutions',
     items: [
       {
@@ -31,7 +31,7 @@ const divisions: Division[] = [
   {
     id: 'market',
     name: 'MARKET\nANALYTICS',
-    color: 'bg-green-500',
+    color: "rgba(38, 167, 69, 0.3)", // green
     description: 'Drives visibility, user engagement, and monetization strategies for projects',
     items: [
       {
@@ -51,7 +51,7 @@ const divisions: Division[] = [
   {
     id: 'research',
     name: 'RESEARCH &\nAPPLIED\nEXPERTISE',
-    color: 'bg-purple-600',
+    color: "rgba(128, 0, 128, 0.3)", // purple
     description: 'Ensures solutions are grounded in real-world needs and validated by data/domain expertise',
     items: [
       {
@@ -75,7 +75,7 @@ const divisions: Division[] = [
   {
     id: 'visual',
     name: 'VISUAL\nDESIGN',
-    color: 'bg-pink-500',
+    color: "rgba(255, 42, 146, 0.6)", // pink
     description: 'Designs branding, user experiences, visuals and storytelling',
     items: [
       {
@@ -241,31 +241,34 @@ const getCardStyles = (cardId: string, baseOffset: number) => {
   let shadowClass = '';
   let fontSize = '';
 
-  if (currentOffset === -1) {
-    // Left card
-    positionClass = 'left-1/2 transform -translate-x-[150%] translate-y-8'; 
-    sizeClass = 'w-56 h-80'; // bigger side card
-    opacityClass = 'opacity-80';
-    zIndexClass = 'z-5';
-    shadowClass = '';
-    fontSize = 'text-lg'; // bigger font
-  } else if (currentOffset === 0) {
-    // Center card
-    positionClass = 'left-1/2 transform -translate-x-1/2';
-    sizeClass = 'w-80 h-[28rem]'; // extra big center card
-    opacityClass = 'opacity-100';
-    zIndexClass = 'z-10';
-    shadowClass = 'shadow-2xl';
-    fontSize = 'text-3xl'; // extra big font
-  } else if (currentOffset === 1) {
-    // Right card
-    positionClass = 'left-1/2 transform translate-x-[50%] translate-y-8';
-    sizeClass = 'w-56 h-80'; // bigger side card
-    opacityClass = 'opacity-80';
-    zIndexClass = 'z-5';
-    shadowClass = '';
-    fontSize = 'text-lg'; // bigger font
-  } else {
+if (currentOffset === -1) {
+  // Left card
+  positionClass =
+    "left-1/2 transform -translate-x-[110%] sm:-translate-x-[150%] translate-y-8";
+  sizeClass = "w-90 h-80"; // bigger side card
+  opacityClass = "opacity-80";
+  zIndexClass = "z-5";
+  shadowClass = "";
+  fontSize = "text-lg"; // bigger font
+} else if (currentOffset === 0) {
+  // Center card
+  positionClass = "left-1/2 transform -translate-x-1/2";
+  sizeClass = "w-80 sm:w-120 h-[28rem]"; // 80 on small, 120 on larger screens
+  opacityClass = "opacity-100";
+  zIndexClass = "z-10";
+  shadowClass = "shadow-2xl";
+  fontSize = "text-2xl sm:text-3xl"; // smaller text on mobile
+} else if (currentOffset === 1) {
+  // Right card
+  positionClass =
+    "left-1/2 transform translate-x-[10%] sm:translate-x-[50%] translate-y-8";
+  sizeClass = "w-90 h-80"; // bigger side card
+  opacityClass = "opacity-80";
+  zIndexClass = "z-5";
+  shadowClass = "";
+  fontSize = "text-lg"; // bigger font
+}
+else {
     return {
       positionClass: 'left-1/2 transform -translate-x-1/2 translate-y-8',
       sizeClass: 'w-56 h-80',
@@ -333,11 +336,12 @@ const getCardStyles = (cardId: string, baseOffset: number) => {
           }
           
           return (
-            <div 
-              key={division.id}
-              className={`absolute top-0 ${styles.positionClass} ${styles.sizeClass} ${styles.opacityClass} ${styles.zIndexClass} ${styles.shadowClass} ${division.color} rounded-3xl cursor-pointer transition-all duration-700 ease-out hover:scale-105`}
-              onClick={clickHandler}
-            >
+              <div
+                key={division.id}
+                className={`absolute top-0 ${styles.positionClass} ${styles.sizeClass} ${styles.opacityClass} ${styles.zIndexClass} ${styles.shadowClass} rounded-3xl cursor-pointer transition-all duration-700 ease-out hover:scale-105`}
+                style={{ backgroundColor: division.color }}
+                onClick={clickHandler}
+              >
               {styles.isCenter && (
                 <div className="absolute top-4 right-4 text-white text-2xl">
                   {isExpanded ? '×' : '+'}
@@ -354,15 +358,18 @@ const getCardStyles = (cardId: string, baseOffset: number) => {
         })}
       </div>
 
-            {/* Cycle Indicator */}
+      {/* Cycle Indicator */}
       <div className="flex space-x-2 mt-8">
-        {divisions.map((_, index) => (
+        {divisions.map((division, index) => (
           <button
             key={index}
             onClick={() => handleManualNavigation(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentIndex ? divisions[currentIndex].color.replace('bg-', 'bg-') : 'bg-gray-300'
-            }`}
+            className="w-3 h-3 rounded-full transition-all duration-300"
+            style={{
+              backgroundColor: index === currentIndex 
+                ? division.color // ✅ use the RGBA color of that division
+                : "rgba(209, 213, 219, 1)", // Tailwind gray-300 equivalent
+            }}
           />
         ))}
       </div>
@@ -376,7 +383,7 @@ const getCardStyles = (cardId: string, baseOffset: number) => {
       <div className="bg-white rounded-2xl shadow-lg p-8 mx-4">
         <div className="text-center mb-8">
           {/* Top border */}
-          <div className={`w-full h-1 ${currentDivision.color} mb-6`}></div>
+          <div className="w-full h-1 mb-6"style={{ backgroundColor: currentDivision.color }}></div>
 
           <p
             className="font-garet text-gray-700 leading-relaxed"
@@ -392,8 +399,9 @@ const getCardStyles = (cardId: string, baseOffset: number) => {
               <div className="flex items-start">
                 {/* Custom bullet */}
                 <div
-                  className={`mr-4 mt-1 flex-shrink-0 w-4 h-4 ${currentDivision.color}`}
+                  className="mr-4 mt-1 flex-shrink-0 w-4 h-4"
                   style={{
+                    backgroundColor: currentDivision.color, // ✅ RGBA applied here
                     WebkitMaskImage: `url(${bullet_point.src})`,
                     WebkitMaskRepeat: "no-repeat",
                     WebkitMaskPosition: "center",
@@ -408,13 +416,13 @@ const getCardStyles = (cardId: string, baseOffset: number) => {
                 <div>
                   <h4
                     className="font-seasons text-gray-900 mb-2"
-                    style={{ fontSize: '24px' }}
+                    style={{ fontSize: "24px" }}
                   >
                     {item.title}
                   </h4>
                   <p
                     className="font-garet text-gray-700 leading-relaxed"
-                    style={{ fontSize: '16px' }}
+                    style={{ fontSize: "16px" }}
                   >
                     {item.description}
                   </p>
@@ -424,17 +432,18 @@ const getCardStyles = (cardId: string, baseOffset: number) => {
           ))}
         </div>
 
+
         {/* Bottom border */}
-        <div className={`w-full h-1 ${currentDivision.color} mt-8`}></div>
+        <div className="w-full h-1 mt-8" style={{ backgroundColor: currentDivision.color }}></div>
       </div>
     </div>
 
 
       {/* Instructions */}
-      <br />
+      {/* <br />
       <p className="text-gray-500 text-sm mt-4 text-center">
         Click the card to expand details • Click side cards to navigate • Use arrow keys for keyboard navigation
-      </p>
+      </p> */}
     </section>
   );
 }
