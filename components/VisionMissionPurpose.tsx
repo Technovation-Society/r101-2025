@@ -3,7 +3,7 @@ export default function VisionMissionPurpose() {
     <section className="py-8 sm:py-12 md:py-16 px-4 bg-gray-100">
       <div className="max-w-4xl mx-auto">
         {/* Our Vision */}
-        <div className="mb-8 sm:mb-12 md:mb-16 text-center sm:text-right">
+        <div className="mb-8 sm:mb-12 md:mb-16 text-right sm:text-right">
           <h2 className="font-seasons text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-8">
             Our Vision
           </h2>
