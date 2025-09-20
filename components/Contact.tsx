@@ -2,7 +2,7 @@ export default function Contact() {
   return (
     <section className="py-16 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="relative bg-blue-lighter rounded-3xl p-8 md:p-12 shadow-2xl">
+        <div className="relative bg-gradient-to-br from-blue-lighter to-[#072777] rounded-3xl p-8 md:p-12 shadow-2xl">
           {/* Vignette overlay */}
           <div className="absolute inset-0 rounded-3xl bg-gradient-radial from-transparent via-blue-lighter/20 to-blue-dark/40"></div>
 
@@ -19,7 +19,7 @@ export default function Contact() {
             </p>
 
             {/* Join Us Button */}
-            <button className="glassglow bg-blue-dark text-white font-seasons text-lg md:text-xl px-12 py-6 rounded-xl transition-all duration-300 hover:scale-105 border-2 border-white w-full max-w-xs">
+            <button className="glassglow bg-blue-dark text-white hover:text-yellow font-seasons text-lg md:text-xl px-12 py-6 rounded-xl transition-all duration-300 hover:scale-105 border-2 border-white w-full max-w-xs">
               Join Us
             </button>
           </div>
