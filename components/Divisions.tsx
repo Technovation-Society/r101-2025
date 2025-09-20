@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import Image from "next/image";
 import bullet_point from "../public/divisions/bullet_star_icon.png";
 
 interface Division {
@@ -19,7 +18,7 @@ const divisions: Division[] = [
   {
     id: 'technical',
     name: 'TECHNICAL\nDEVELOPMENT',
-    color: "rgba(0, 123, 255, 0.3)", // blue
+    color: "rgba(0, 123, 255, 0.9)", // blue
     description: 'Builds functional prototypes, apps, and tech solutions',
     items: [
       {
@@ -31,7 +30,7 @@ const divisions: Division[] = [
   {
     id: 'market',
     name: 'MARKET\nANALYTICS',
-    color: "rgba(38, 167, 69, 0.3)", // green
+    color: "rgba(38, 167, 69, 0.9)", // green
     description: 'Drives visibility, user engagement, and monetization strategies for projects',
     items: [
       {
@@ -51,7 +50,7 @@ const divisions: Division[] = [
   {
     id: 'research',
     name: 'RESEARCH &\nAPPLIED\nEXPERTISE',
-    color: "rgba(128, 0, 128, 0.3)", // purple
+    color: "rgba(128, 0, 128, 0.9)", // purple
     description: 'Ensures solutions are grounded in real-world needs and validated by data/domain expertise',
     items: [
       {
@@ -75,7 +74,7 @@ const divisions: Division[] = [
   {
     id: 'visual',
     name: 'VISUAL\nDESIGN',
-    color: "rgba(255, 42, 146, 0.6)", // pink
+    color: "rgba(255, 42, 146, 0.9)", // pink
     description: 'Designs branding, user experiences, visuals and storytelling',
     items: [
       {
@@ -104,14 +103,25 @@ export default function Divisions() {
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [animationDirection, setAnimationDirection] = useState<'forward' | 'backward'>('forward');
+  const [isDesktop, setIsDesktop] = useState<boolean>(false);
 
   const currentDivision = divisions[currentIndex];
+
+  // Check if device is desktop
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
+  }, []);
 
   const nextDivision = (): void => {
     if (isAnimating) return;
     setIsAnimating(true);
     setAnimationDirection('forward');
-    //setIsExpanded(false);
     setTimeout(() => {
       setCurrentIndex((prev) => (prev + 1) % divisions.length);
       setIsAnimating(false);
@@ -122,7 +132,6 @@ export default function Divisions() {
     if (isAnimating) return;
     setIsAnimating(true);
     setAnimationDirection('backward');
-    //setIsExpanded(false);
     setTimeout(() => {
       setCurrentIndex((prev) => (prev - 1 + divisions.length) % divisions.length);
       setIsAnimating(false);
@@ -132,9 +141,7 @@ export default function Divisions() {
   const goToIndex = (targetIndex: number): void => {
     if (isAnimating || targetIndex === currentIndex) return;
     setIsAnimating(true);
-    //setIsExpanded(false);
     
-    // Determine direction based on shortest path
     const forwardDistance = (targetIndex - currentIndex + divisions.length) % divisions.length;
     const backwardDistance = (currentIndex - targetIndex + divisions.length) % divisions.length;
     
@@ -151,9 +158,11 @@ export default function Divisions() {
   };
 
   const handleManualNavigation = (direction: 'next' | 'prev' | number): void => {
-    // Pause auto-rotation for 6 seconds when user manually navigates
-    setIsPaused(true);
-    setTimeout(() => setIsPaused(false), 6000);
+    // Only pause for mobile since desktop doesn't auto-rotate
+    if (!isDesktop) {
+      setIsPaused(true);
+      setTimeout(() => setIsPaused(false), 3000);
+    }
     
     if (typeof direction === 'number') {
       goToIndex(direction);
@@ -174,8 +183,9 @@ export default function Divisions() {
     }
   };
 
-  // Auto-rotation effect
+  // Mobile auto-rotation restored
   useEffect(() => {
+    if (isDesktop) return; // No rotation for desktop
     if (isPaused || isExpanded) return;
     
     const interval = setInterval(() => {
@@ -185,7 +195,7 @@ export default function Divisions() {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [isPaused, isExpanded, isAnimating, currentIndex]);
+  }, [isPaused, isExpanded, isAnimating, currentIndex, isDesktop]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -204,11 +214,10 @@ export default function Divisions() {
       const endX = e.changedTouches[0].clientX;
       const diffX = startX - endX;
 
-      // Swipe threshold = 50px
       if (diffX > 50) {
-        handleManualNavigation("next"); // swipe left
+        handleManualNavigation("next");
       } else if (diffX < -50) {
-        handleManualNavigation("prev"); // swipe right
+        handleManualNavigation("prev");
       }
     };
 
@@ -221,229 +230,344 @@ export default function Divisions() {
     };
   }, []);
 
+  const getCardStyles = (cardId: string, baseOffset: number) => {
+    let currentOffset = baseOffset;
 
-// Generate stable card positions for smooth animation
-const getCardStyles = (cardId: string, baseOffset: number) => {
-  let currentOffset = baseOffset;
-
-  if (isAnimating) {
-    if (animationDirection === 'forward') {
-      currentOffset = baseOffset - 1;
-    } else {
-      currentOffset = baseOffset + 1;
+    if (isAnimating) {
+      if (animationDirection === 'forward') {
+        currentOffset = baseOffset - 1;
+      } else {
+        currentOffset = baseOffset + 1;
+      }
     }
-  }
 
-  let positionClass = '';
-  let sizeClass = '';
-  let opacityClass = '';
-  let zIndexClass = '';
-  let shadowClass = '';
-  let fontSize = '';
+    let positionClass = '';
+    let sizeClass = '';
+    let opacityClass = '';
+    let zIndexClass = '';
+    let shadowClass = '';
+    let fontSize = '';
 
-if (currentOffset === -1) {
-  // Left card
-  positionClass =
-    "left-1/2 transform -translate-x-[110%] sm:-translate-x-[150%] translate-y-8";
-  sizeClass = "w-90 h-80"; // bigger side card
-  opacityClass = "opacity-80";
-  zIndexClass = "z-5";
-  shadowClass = "";
-  fontSize = "text-lg"; // bigger font
-} else if (currentOffset === 0) {
-  // Center card
-  positionClass = "left-1/2 transform -translate-x-1/2";
-  sizeClass = "w-80 sm:w-120 h-[28rem]"; // 80 on small, 120 on larger screens
-  opacityClass = "opacity-100";
-  zIndexClass = "z-10";
-  shadowClass = "shadow-2xl";
-  fontSize = "text-2xl sm:text-3xl"; // smaller text on mobile
-} else if (currentOffset === 1) {
-  // Right card
-  positionClass =
-    "left-1/2 transform translate-x-[10%] sm:translate-x-[50%] translate-y-8";
-  sizeClass = "w-90 h-80"; // bigger side card
-  opacityClass = "opacity-80";
-  zIndexClass = "z-5";
-  shadowClass = "";
-  fontSize = "text-lg"; // bigger font
-}
-else {
-    return {
-      positionClass: 'left-1/2 transform -translate-x-1/2 translate-y-8',
-      sizeClass: 'w-56 h-80',
-      opacityClass: 'opacity-0',
-      zIndexClass: 'z-0',
-      shadowClass: '',
-      fontSize: 'text-lg',
-      isCenter: false,
-      isLeft: false,
-      isRight: false,
-    };
-  }
+    // Desktop: Static 4 cards with proper gaps and card size
+    if (isDesktop) {
+      const divisionIndex = divisions.findIndex(d => d.id === cardId);
 
-  return {
-    positionClass,
-    sizeClass,
-    opacityClass,
-    zIndexClass,
-    shadowClass,
-    fontSize,
-    isCenter: currentOffset === 0,
-    isLeft: currentOffset === -1,
-    isRight: currentOffset === 1,
+      if (divisionIndex === 0) {
+        positionClass = "left-[2%]";
+      } else if (divisionIndex === 1) {
+        positionClass = "left-[27%]";
+      } else if (divisionIndex === 2) {
+        positionClass = "left-[52%]";
+      } else if (divisionIndex === 3) {
+        positionClass = "left-[77%]";
+      }
+
+      // 🔥 EXTRA BIG for desktop
+      sizeClass = "w-[28rem] h-[20rem]"; // 448px x 320px
+      opacityClass = "opacity-100";
+      zIndexClass = "z-5";
+      shadowClass = "shadow-2xl";
+      fontSize = "text-3xl lg:text-4xl"; // bigger text
+
+      return {
+        positionClass,
+        sizeClass,
+        opacityClass,
+        zIndexClass,
+        shadowClass,
+        fontSize,
+        isCenter: false,
+        isLeft: false,
+        isRight: false,
+      };
+    }
+
+    // Mobile: Show 3 cards (original behavior with animation)
+    else {
+      if (currentOffset === -1) {
+        positionClass = "left-1/2 transform -translate-x-[110%] translate-y-8";
+        sizeClass = "w-72 h-64";
+        opacityClass = "opacity-80";
+        zIndexClass = "z-5";
+        shadowClass = "";
+        fontSize = "text-lg";
+      } else if (currentOffset === 0) {
+        positionClass = "left-1/2 transform -translate-x-1/2";
+        sizeClass = "w-80 h-80";
+        opacityClass = "opacity-100";
+        zIndexClass = "z-10";
+        shadowClass = "shadow-2xl";
+        fontSize = "text-2xl";
+      } else if (currentOffset === 1) {
+        positionClass = "left-1/2 transform translate-x-[10%] translate-y-8";
+        sizeClass = "w-72 h-64";
+        opacityClass = "opacity-80";
+        zIndexClass = "z-5";
+        shadowClass = "";
+        fontSize = "text-lg";
+      } else {
+        return {
+          positionClass: 'left-1/2 transform -translate-x-1/2 translate-y-8',
+          sizeClass: 'w-56 h-80',
+          opacityClass: 'opacity-0',
+          zIndexClass: 'z-0',
+          shadowClass: '',
+          fontSize: 'text-lg',
+          isCenter: false,
+          isLeft: false,
+          isRight: false,
+        };
+      }
+
+      return {
+        positionClass,
+        sizeClass,
+        opacityClass,
+        zIndexClass,
+        shadowClass,
+        fontSize,
+        isCenter: currentOffset === 0,
+        isLeft: currentOffset === -1,
+        isRight: currentOffset === 1,
+      };
+    }
   };
-};
 
-
-
+  // Calculate chevron position based on current division
+  const getChevronPosition = () => {
+    if (currentIndex === 0) return "left-[2%] translate-x-[4.5rem]"; // Technical - adjusted left
+    if (currentIndex === 1) return "left-[27%] translate-x-[5rem]"; // Market Analytics - adjusted left
+    if (currentIndex === 2) return "left-[52%] translate-x-[5.5rem]"; // Research - adjusted left
+    if (currentIndex === 3) return "left-[77%] translate-x-[6rem]"; // Visual Design - adjusted left
+    return "left-[2%] translate-x-[10rem]"; // fallback
+  };
 
   return (
-    <section className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 font-garet overflow-x-hidden">
+    <section className="bg-gray-50 flex flex-col items-center p-4 py-16 font-garet overflow-x-hidden">
 
       {/* Header */}
-        <div className="text-center mb-16">
-          <h1 
-            className="font-seasons font-bold text-gray-900 leading-tight 
-                      text-[40px] sm:text-[48px] lg:text-[64px]"
-          >
-            <span className="block lg:inline">The Four Skill</span>{' '}
-            <span className="block lg:inline">Based Divisions</span>
-          </h1>
+      <div className="text-center mt-16 mb-16">
+        <h1 
+          className="font-seasons font-bold text-gray-900 leading-tight 
+                    text-[40px] sm:text-[48px] lg:text-[64px]"
+        >
+          <span className="block lg:inline">The Four Skill</span>{' '}
+          <span className="block lg:inline">Based Divisions</span>
+        </h1>
+      </div>
+
+      {/* PC Instructions - Only show on desktop */}
+      {isDesktop && (
+        <div className="text-center mb-8">
+          <p className="font-garet text-gray-600 text-lg">
+            Click on any division card to explore its details
+          </p>
         </div>
+      )}
 
+      {/* Main Content Container - Fixed Height */}
+      <div className="flex flex-col items-center w-full max-w-5xl">
+        
+        {/* Division Cards Container */}
+        <div
+          className={`relative w-full mb-8 ${
+            isDesktop ? "flex justify-center gap-8 h-[22rem]" : "h-[20rem]"
+          } overflow-visible`}
+        >
 
-      {/* Division Cards Container */}
-      <div className="relative w-full max-w-5xl mb-16 h-100 overflow-visible">
-        {/* Render all divisions with stable IDs */}
-        {divisions.map((division, divisionIndex) => {
-          // Calculate this division's offset from current center
-          const offset = (divisionIndex - currentIndex + divisions.length) % divisions.length;
-          const adjustedOffset = offset > divisions.length / 2 ? offset - divisions.length : offset;
-          
-          const styles = getCardStyles(division.id, adjustedOffset);
-          
-          // Determine click handler based on position
-          let clickHandler;
-          if (styles.isCenter) {
-            clickHandler = toggleExpanded;
-          } else if (styles.isLeft) {
-            clickHandler = () => handleManualNavigation(divisionIndex);
-          } else if (styles.isRight) {
-            clickHandler = () => handleManualNavigation(divisionIndex);
-          } else{
-            
-          }
-          
-          return (
+          {divisions.map((division, divisionIndex) => {
+            let styles;
+
+            if (isDesktop) {
+              // Desktop: all 4 cards visible
+              styles = {
+                positionClass: "",
+                sizeClass: "w-[26rem] h-[20rem]",
+                opacityClass: "opacity-100",
+                zIndexClass: "z-10",
+                shadowClass: "shadow-2xl",
+                fontSize: "text-2xl",
+                isCenter: true, // Changed to true so X buttons show on desktop
+                isLeft: false,
+                isRight: false,
+              };
+            } else {
+              // Mobile carousel with offset
+              const offset =
+                (divisionIndex - currentIndex + divisions.length) % divisions.length;
+              const adjustedOffset =
+                offset > divisions.length / 2 ? offset - divisions.length : offset;
+              styles = getCardStyles(division.id, adjustedOffset);
+            }
+
+            let clickHandler;
+            if (isDesktop) {
+              clickHandler = () => {
+                if (currentIndex === divisionIndex) {
+                  // If clicking the same card, toggle expanded state
+                  toggleExpanded();
+                } else {
+                  // If clicking different card, select it and expand
+                  setCurrentIndex(divisionIndex);
+                  setIsExpanded(true);
+                }
+              };
+            } else {
+              if (styles.isCenter) {
+                clickHandler = () => toggleExpanded();
+              } else {
+                clickHandler = () => handleManualNavigation(divisionIndex);
+              }
+            }
+
+            return (
               <div
                 key={division.id}
-                className={`absolute top-0 ${styles.positionClass} ${styles.sizeClass} ${styles.opacityClass} ${styles.zIndexClass} ${styles.shadowClass} rounded-3xl cursor-pointer transition-all duration-700 ease-out hover:scale-105`}
+                className={`${isDesktop ? "" : "absolute top-0"} ${
+                  styles.positionClass
+                } ${styles.sizeClass} 
+                           ${styles.opacityClass} ${styles.zIndexClass} ${
+                  styles.shadowClass
+                } 
+                           rounded-2xl cursor-pointer transition-all duration-300 ease-out
+                           ${isDesktop && currentIndex === divisionIndex && isExpanded 
+                             ? 'scale-105 shadow-2xl' 
+                             : 'hover:scale-105'}`}
                 style={{ backgroundColor: division.color }}
                 onClick={clickHandler}
               >
-              {styles.isCenter && (
-                <div className="absolute top-4 right-4 text-white text-2xl">
-                  {isExpanded ? '×' : '+'}
+                {/* X button - Mobile only (center card) */}
+                {!isDesktop && styles.isCenter && (
+                  <div
+                    className="absolute top-3 right-3 text-white text-3xl leading-none cursor-pointer 
+                               transition-transform duration-500 ease-in-out z-50"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // Mobile: only center card can toggle expand/collapse
+                      toggleExpanded();
+                    }}
+                    style={{
+                      transform: styles.isCenter && isExpanded
+                        ? "rotate(45deg)"
+                        : "rotate(0deg)",
+                    }}
+                  >
+                    ×
+                  </div>
+                )}
+
+                <div className="flex items-center justify-center h-full text-center p-4">
+                  <h3
+                    className={`text-white font-sifonn leading-tight whitespace-pre-line 
+                                transition-all duration-300 ${styles.fontSize} font-bold`}
+                  >
+                    {division.name}
+                  </h3>
                 </div>
-              )}
-              
-              <div className="flex items-center justify-center h-full text-center p-6">
-                <h3 className={`text-white font-sifonn leading-tight whitespace-pre-line transition-all duration-700 ${styles.fontSize}`}>
-                  {division.name}
-                </h3>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
 
-      {/* Cycle Indicator */}
-      <div className="flex space-x-2 mt-8">
-        {divisions.map((division, index) => (
-          <button
-            key={index}
-            onClick={() => handleManualNavigation(index)}
-            className="w-3 h-3 rounded-full transition-all duration-300"
-            style={{
-              backgroundColor: index === currentIndex 
-                ? division.color // ✅ use the RGBA color of that division
-                : "rgba(209, 213, 219, 1)", // Tailwind gray-300 equivalent
-            }}
-          />
-        ))}
-      </div>
-
-    {/* Expanded Content */}
-    <div
-      className={`w-full max-w-4xl transition-all duration-500 overflow-hidden ${
-        isExpanded ? 'max-h-[2000px] opacity-100 mt-12 mb-12' : 'max-h-0 opacity-0'
-      }`}
-    >
-      <div className="bg-white rounded-2xl shadow-lg p-8 mx-4">
-        <div className="text-center mb-8">
-          {/* Top border */}
-          <div className="w-full h-1 mb-6"style={{ backgroundColor: currentDivision.color }}></div>
-
-          <p
-            className="font-garet text-gray-700 leading-relaxed"
-            style={{ fontSize: '16px' }}
-          >
-            {currentDivision.description}
-          </p>
         </div>
 
-        <div className="space-y-6">
-          {currentDivision.items.map((item, index) => (
-            <div key={index}>
-              <div className="flex items-start">
-                {/* Custom bullet */}
-                <div
-                  className="mr-4 mt-1 flex-shrink-0 w-4 h-4"
-                  style={{
-                    backgroundColor: currentDivision.color, // ✅ RGBA applied here
-                    WebkitMaskImage: `url(${bullet_point.src})`,
-                    WebkitMaskRepeat: "no-repeat",
-                    WebkitMaskPosition: "center",
-                    WebkitMaskSize: "contain",
-                    maskImage: `url(${bullet_point.src})`,
-                    maskRepeat: "no-repeat",
-                    maskPosition: "center",
-                    maskSize: "contain",
-                  }}
+        {/* Chevron Arrow - PC Only, show only when division is selected/expanded */}
+        {isDesktop && isExpanded && (
+          <div className="flex justify-center w-full mb-4 relative">
+            <div 
+              className={`absolute ${getChevronPosition()} -top-8 transition-all duration-300 ease-out cursor-pointer transform rotate-180`}
+              onClick={toggleExpanded}
+            >
+              <svg 
+                width="48" 
+                height="48" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+                className="hover:scale-110 transition-transform duration-200"
+              >
+                <path 
+                  d="M7 10L12 15L17 10" 
+                  stroke={currentDivision.color.replace('0.9', '1')} 
+                  strokeWidth="3" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
                 />
-
-                <div>
-                  <h4
-                    className="font-seasons text-gray-900 mb-2"
-                    style={{ fontSize: "24px" }}
-                  >
-                    {item.title}
-                  </h4>
-                  <p
-                    className="font-garet text-gray-700 leading-relaxed"
-                    style={{ fontSize: "16px" }}
-                  >
-                    {item.description}
-                  </p>
-                </div>
-              </div>
+              </svg>
             </div>
-          ))}
+          </div>
+        )}
+
+        {/* Cycle Indicator - Only show on mobile */}
+        {!isDesktop && (
+          <div className="flex space-x-2 mb-4">
+            {divisions.map((division, index) => (
+              <button
+                key={index}
+                onClick={() => handleManualNavigation(index)}
+                className="w-3 h-3 rounded-full transition-all duration-300"
+                style={{
+                  backgroundColor: index === currentIndex 
+                    ? division.color
+                    : "rgba(209, 213, 219, 1)",
+                }}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Expanded Content - Smooth expand/collapse */}
+        <div className="w-full max-w-4xl">
+          <div
+            className={`transition-all duration-500 ease-out overflow-hidden ${
+              isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="bg-white rounded-2xl shadow-lg p-8 mx-4">
+              <div className="text-center mb-8">
+                <div className="w-full h-1 mb-6" style={{ backgroundColor: currentDivision.color }}></div>
+                <p className="font-garet text-gray-700 leading-relaxed" style={{ fontSize: '16px' }}>
+                  {currentDivision.description}
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                {currentDivision.items.map((item, index) => (
+                  <div key={index}>
+                    <div className="flex items-start">
+                      <div
+                        className="mr-4 mt-1 flex-shrink-0 w-6 h-6"
+                        style={{
+                          backgroundColor: currentDivision.color,
+                          WebkitMaskImage: `url(${bullet_point.src})`,
+                          WebkitMaskRepeat: "no-repeat",
+                          WebkitMaskPosition: "center",
+                          WebkitMaskSize: "contain",
+                          maskImage: `url(${bullet_point.src})`,
+                          maskRepeat: "no-repeat",
+                          maskPosition: "center",
+                          maskSize: "contain",
+                        }}
+                      />
+
+                      <div>
+                        <h4 className="font-seasons text-gray-900 mb-2" style={{ fontSize: "24px" }}>
+                          {item.title}
+                        </h4>
+                        <p className="font-garet text-gray-700 leading-relaxed" style={{ fontSize: "16px" }}>
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="w-full h-1 mt-8" style={{ backgroundColor: currentDivision.color }}></div>
+            </div>
+          </div>
         </div>
 
-
-        {/* Bottom border */}
-        <div className="w-full h-1 mt-8" style={{ backgroundColor: currentDivision.color }}></div>
       </div>
-    </div>
-
-
-      {/* Instructions */}
-      {/* <br />
-      <p className="text-gray-500 text-sm mt-4 text-center">
-        Click the card to expand details • Click side cards to navigate • Use arrow keys for keyboard navigation
-      </p> */}
     </section>
   );
 }
