@@ -1,3 +1,5 @@
+import Button from "./Button";
+
 export default function Contact() {
   return (
     <section className="py-16 px-4">
@@ -19,9 +21,7 @@ export default function Contact() {
             </p>
 
             {/* Join Us Button */}
-            <button className="glassglow bg-blue-dark text-white font-seasons text-lg md:text-xl px-12 py-6 rounded-xl transition-all duration-300 hover:scale-105 border-2 border-white w-full max-w-xs">
-              Join Us
-            </button>
+            <Button text="Join Us" />
           </div>
         </div>
       </div>
