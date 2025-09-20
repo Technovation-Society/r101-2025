@@ -102,15 +102,15 @@ export default function Activities(): JSX.Element {
                                 </div>
 
                                 <h3
-                                    className="text-sm font-extrabold tracking-wider uppercase"
+                                    className="text-lg font-extrabold tracking-wider uppercase"
                                     style={{ fontFamily: "var(--font-garet), system-ui, sans-serif" }}
                                 >
                                     {item.title}
                                 </h3>
 
-                                <p className="text-xs font-semibold text-gray-600 mt-2">{item.subtitle}</p>
+                                <p className="text-sm italic font-semibold text-gray-600 mt-2">{item.subtitle}</p>
 
-                                <p className="mt-3 text-sm text-gray-600 max-w-[18rem]">{item.desc}</p>
+                                <p className="mt-3 text-sm text-gray-600 max-w-[18rem] text-justify">{item.desc}</p>
                             </article>
                         ))}
                     </div>
