@@ -21,7 +21,7 @@ export default function Footer() {
 
           {/* Social Media Icons */}
           <div className="flex justify-center gap-2 mb-6">
-            <a href="#" className="glassglow group hover:rotate-3">
+            <a href="https://www.facebook.com/TechnovationSociety" target="_blank" rel="noopener noreferrer" className="glassglow group hover:rotate-3">
               <Image
                 src="/footer/facebook_icon.png"
                 alt="Facebook"
@@ -30,7 +30,7 @@ export default function Footer() {
                 className="transition-all duration-300 group-hover:brightness-110"
               />
             </a>
-            <a href="#" className="glassglow group hover:-rotate-2">
+            <a href="https://www.instagram.com/technovationsociety" target="_blank" rel="noopener noreferrer" className="glassglow group hover:-rotate-2">
               <Image
                 src="/footer/instagram_icon.png"
                 alt="Instagram"
@@ -39,7 +39,7 @@ export default function Footer() {
                 className="transition-all duration-300 group-hover:brightness-110"
               />
             </a>
-            <a href="#" className="glassglow group hover:rotate-1">
+            <a href="https://www.linkedin.com/company/technovation-society" target="_blank" rel="noopener noreferrer" className="glassglow group hover:rotate-1">
               <Image
                 src="/footer/linkedin_icon.png"
                 alt="LinkedIn"
@@ -48,7 +48,7 @@ export default function Footer() {
                 className="transition-all duration-300 group-hover:brightness-110"
               />
             </a>
-            <a href="#" className="glassglow group hover:-rotate-3">
+            <a href="https://www.tiktok.com/@technovationsociety" target="_blank" rel="noopener noreferrer" className="glassglow group hover:-rotate-3">
               <Image
                 src="/footer/tiktok_icon.png"
                 alt="TikTok"
@@ -57,7 +57,7 @@ export default function Footer() {
                 className="transition-all duration-300 group-hover:brightness-110"
               />
             </a>
-            <a href="#" className="glassglow group hover:rotate-2">
+            <a href="mailto:technovsoc.ust@gmail.com" className="glassglow group hover:rotate-2">
               <Image
                 src="/footer/email_icon.png"
                 alt="Email"
