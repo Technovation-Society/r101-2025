@@ -31,6 +31,16 @@ export const metadata: Metadata = {
   authors: [{ name: "Technovation Society" }],
   creator: "Technovation Society",
   publisher: "Technovation Society",
+  icons: {
+    icon: [
+      {
+        url: "/hero/TECHSOC_Logo.png",
+        type: "image/png",
+      },
+    ],
+    shortcut: "/hero/TECHSOC_Logo.png",
+    apple: "/hero/TECHSOC_Logo.png",
+  },
   robots: {
     index: true,
     follow: true,
