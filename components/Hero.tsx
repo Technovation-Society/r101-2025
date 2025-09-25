@@ -17,8 +17,8 @@ export default function Hero() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center">
-          <Button text="Get to Know Us" />
-          <Button text="Join Us" />
+          <Button text="Get to Know Us" href="#about" />
+          <Button text="Join Us" href=""/>
         </div>
       </div>
     </section>
