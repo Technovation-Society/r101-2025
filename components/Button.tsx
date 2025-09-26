@@ -30,8 +30,7 @@ export default function Button({ text, bgColor, href }: ButtonProps) {
   if (href) {
     // Check if it's an anchor link (starts with #)
     if (href.startsWith("#")) {
-      const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
+      const handleSmoothScroll = () => {
         const targetId = href.substring(1);
         const targetElement = document.getElementById(targetId);
         if (targetElement) {
@@ -43,9 +42,9 @@ export default function Button({ text, bgColor, href }: ButtonProps) {
       };
 
       return (
-        <a href={href} className={buttonStyles} onClick={handleSmoothScroll}>
+        <button className={buttonStyles} onClick={handleSmoothScroll}>
           {text}
-        </a>
+        </button>
       );
     }
 
