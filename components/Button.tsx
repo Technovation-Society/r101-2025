@@ -26,8 +26,37 @@ export default function Button({ text, bgColor, href }: ButtonProps) {
   `;
 
   if (href) {
+    // Check if it's an anchor link (starts with #)
+    if (href.startsWith("#")) {
+      const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        const targetId = href.substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      };
+
+      return (
+        <a href={href} className={buttonStyles} onClick={handleSmoothScroll}>
+          {text}
+        </a>
+      );
+    }
+
+    // Check if it's an external link
+    const isExternalLink = href.startsWith("http") || href.startsWith("https");
+
     return (
-      <Link href={href} className={buttonStyles}>
+      <Link
+        href={href}
+        className={buttonStyles}
+        target={isExternalLink ? "_blank" : undefined}
+        rel={isExternalLink ? "noopener noreferrer" : undefined}
+      >
         {text}
       </Link>
     );
