@@ -24,7 +24,12 @@ const divisions: Division[] = [
       {
         title: 'Software Development',
         description: 'Build and maintain scalable digital platforms for the Technovation Society and TOMASInno Center (TIC).'
+      },
+      {
+        title: 'Engineering and Prototyping',
+        description: 'Design and develop functional prototypes, hardware models, and technical solutions.'
       }
+
     ]
   },
   {

@@ -21,7 +21,7 @@ export default function Contact() {
             </p>
 
             {/* Join Us Button */}
-            <Button text="Join Us" />
+            <Button text="Join Us" href="https://forms.gle/WCyZsUvMdGLZqjWcA"/>
           </div>
         </div>
       </div>
